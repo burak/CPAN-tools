@@ -1,58 +1,4 @@
 #!/usr/bin/perl
-
-package Net::BitBucket;
-use strict;
-use warnings;
-use constant UA_TIMEOUT => 10;
-use LWP::UserAgent;
-use JSON;
-use Carp qw(croak);
-
-use constant URL      => 'https://api.bitbucket.org/1.0/users/%s/';
-use constant BASE_URL => 'https://bitbucket.org/%s/%s/';
-
-our $VERSION = '0.10';
-
-my $UA = LWP::UserAgent->new;
-$UA->agent(sprintf '%s/%s', __PACKAGE__, $VERSION);
-$UA->env_proxy;
-$UA->timeout(UA_TIMEOUT);
-
-sub new { return bless {}, shift };
-
-sub agent { return $UA }
-
-sub get {
-    my $self = shift;
-    my $url  = shift;
-    my $r    = $self->agent->get($url);
-
-    if ( $r->is_success ) {
-        my $raw = $r->decoded_content;
-        return JSON::from_json( $raw );
-    }
-
-    croak( 'GET request failed: ' . $r->as_string );
-}
-
-sub repositories {
-    my $self = shift;
-    my $user = shift || croak 'No user name specified';
-    warn ">> Fetching the base URL ...\n";
-    my $raw  = eval { $self->get( sprintf URL, $user ) };
-    croak "$user is not a valid user. Error: $@" if $@;
-    croak "Data set is not a hash but $raw" if ref $raw ne 'HASH';
-    my $r = $raw->{repositories} || die "No 'repositories' key in resultset";
-    my @repos = sort { $a->{name} cmp $b->{name} }
-                map { {
-                    name => $_->{name},
-                    url  => sprintf( BASE_URL, $user, $_->{slug} ),
-                }}
-                @{ $r };
-    return @repos;
-}
-
-package main;
 use strict;
 use warnings;
 use File::Spec;
@@ -63,20 +9,25 @@ use constant RE_CPAN   => qr{ \A (CPAN) \- (.+?) \z }xms;
 use constant SEPERATOR => join q{},  q{-} x 80, "\n";
 use Cwd;
 use Carp qw( croak );
+use Net::GitHub;
 
 my $CWD   = getcwd;
 my $START = time;
-my $bit   = Net::BitBucket->new;
+
+my $g = Net::GitHub->new;
+my @urls = map $_->{clone_url}, $g->repos->list_user( 'burak' );
 
 _w( "CURRENT DIRECTORY: $CWD\n",
     "STARTING TO CLONE REPOSITORIES FROM BURAK GURSOY...\n",
     SEPERATOR );
 
 my $total = 0;
-foreach my $repo ( $bit->repositories( 'burak' ) ) {
+foreach my $repo ( @urls ) {
     chdir $CWD; # reset
 
-    my $name = $repo->{name};
+    my $name = $repo;
+    $name =~ s{.*/}{}xms;
+    $name =~ s{[.]git\z}{}xms;
     my @path = $name =~ RE_CPAN ? ($1, $2) : ($name);
     my $dir  = File::Spec->catdir( @path );
 
@@ -94,7 +45,7 @@ foreach my $repo ( $bit->repositories( 'burak' ) ) {
     }
 
     eval {
-        hg( clone => $repo->{url}, $local_target ? ($local_target) : () );
+        git( clone => $repo, $local_target ? ($local_target) : () );
         _w( "... done!\n", SEPERATOR );
         1;
     } or do {
@@ -112,9 +63,9 @@ sub _w {
     return;
 }
 
-sub hg {
+sub git {
     my @args = @_;
-    system( hg => @args ) && croak "FAILED(@args): $?";
+    system( git => @args ) && croak "FAILED(@args): $?";
     return;
 }
 

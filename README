@@ -10,25 +10,24 @@ these modules:
 
     HTML::TableParser
     JSON
-    LWP::UserAgent
-    LWP::Protocol::https
-    Software::License
     Module::Build
+    Net::GitHub
+    Software::License
     Text::Template::Simple
     Time::HiRes
 
-You'll also need to have Mercurial installed: http://mercurial.selenic.com/
+You'll also need to have Git installed.
 
 Then choose where to install the repositores (it can be ~/bgrepos).
 Open a terminal (or dosbox) and cd to that directory.
 Issue this command:
 
 Under Windows:
-    perl -MLWP::Simple=get -e "print get q{http://bitbucket.org/burak/cpan-tools/raw/tip/bclone.pl}" | perl
+    perl -MLWP::Simple=get -e "print get q{https://raw.github.com/burak/CPAN-tools/master/bclone.pl}" | perl
 
 Under Linux/Unix:
 
-    perl -MLWP::Simple=get -e 'print get q{http://bitbucket.org/burak/cpan-tools/raw/tip/bclone.pl}' | perl
+    perl -MLWP::Simple=get -e 'print get q{https://raw.github.com/burak/CPAN-tools/master/bclone.pl}' | perl
 
 (if you have trouble executing these, then download bclone.pl manually and
 execute: `perl bclone.pl`)
