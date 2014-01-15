@@ -44,8 +44,8 @@ RUN: {
     while ( my $dir = readdir DIR ) {
         next if $dir =~ m{\A[.]}xms;
         my $target = catdir $base, $dir;
-        my $hg_dir = catdir $target, '.hg';
-        next if ! -d $hg_dir;
+        my $git_dir = catdir $target, '.git';
+        next if ! -d $git_dir;
         visit( $target );
     }
     closedir DIR;
@@ -58,7 +58,7 @@ sub visit {
     chdir $dir;
     my $status;
     my $ok = eval {
-        $status = qx{hg status}; ## no critic (ProhibitBacktickOperators)
+        $status = qx{git status}; ## no critic (ProhibitBacktickOperators)
         1;
     };
     if ( $ok ) {
@@ -67,12 +67,12 @@ sub visit {
             my @lines = split m{\n}xms, $status;
             _p("\t$_\n") for @lines;
             if ( $OPT{diff} ) {
-                my $cmd = q(hg diff);
+                my $cmd = q(git diff);
                 $cmd .= q( | colordiff) if $OPT{color};
                 system $cmd;
             }
             if ( $OPT{commit} ) {
-                system hg => 'commit';
+                system git => 'commit';
             }
         }
     }
@@ -81,7 +81,7 @@ sub visit {
     }
 
     foreach my $cmd ( qw( push pull update ) ) {
-        system hg => $cmd if $OPT{$cmd};
+        system git => $cmd if $OPT{$cmd};
     }
 
     chdir $prev;
