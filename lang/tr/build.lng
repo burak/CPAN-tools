@@ -1,0 +1,54 @@
+%lang = (
+   'pause'           => 'Devam etmek için bir tuşa basın ...',
+   'bench.error'     => "\nİşlem %.4f saniye sürdü\n",
+   'bench.ok'        => "\nİşlem %s sürdü\n",
+   'start.message'   => "%s sürüm %s başlıyor ...\n",
+   'exit.message'    => "\n\n\tŞu güzel ortamı bozuyorsun!\n\n",
+   'error.notnumber' => "\n\tGirilen veri numara değil!\n\n",
+   'error.length'    => "\n\tGeçersiz numara girildi!\n\n",
+   'error.notexists' => "\n\tVarolmayan bir şeyi seçmeye çalışıyorsunuz!\n\n",
+   'ask.selection'   => 'Paketlemek için bir modül seçin [1]: ',
+   'finish.report'   => <<'INFO',
+Bu oturumda kullanılan dizinler:
+   Kaynak    : <%= $p{source} %>
+   Modül     : <%= $p{source_dir} %>
+   Paketleme : <%= $p{build} %> (sakla: <%= $p{keep} %>)
+   Arşiv     : <%= $p{archive} %>
+   CWD       : <%= $p{cwd} %>
+INFO
+   'get_path.source' => 'Bilinmeyen kaynak dizini: <%=      $p{source} %>',
+   'get_path.build'  => 'Bilinmeyen paketleme dizini: <%=   $p{build}  %>',
+   'get_path.build'  => 'Bilinmeyen arşiv dizini: <%=       $p{build}  %>',
+   'duplicate.copy'  => '<%= $p{file} %> kopyalanamadı: <%= $p{error}  %>',
+   'build.buildpl'   => '[OOOPS!] Build.PL, <%=    $p{target} %> içinde bulunamadı !!!' . "\n",
+   'build.makefilepl'=> '[OOOPS!] Makefile.PL, <%= $p{target} %> içinde bulunamadı !!!' . "\n",
+   'build.nobuilder' => '<%=   $p{target} %> içinde herhangi bir kurulum aracı bulunamadı!' . "\n",
+   'ask.nobuilder'   => '! <%= $p{path}   %> içinde bir kurulum aracı olmadığından atlanıyor ...'."\n",
+   'ask.nomodules'   => 'Kaynak dizinde modül(ler) bulunamadı!' . "\n",
+   'ask.found'       => "\nBulunan dağıtımlar:\n\n" . "\n",
+   'ask.ok'          => <<'MESSAGE',
+
+    OYE!
+
+Paketlemek için <%= $p{target} %> (<%= $p{modname} %>) seçildi ...
+
+MESSAGE
+   'hello.hello'     => <<'MESSAGE',
+<%=$p{os}%> altında perl <%=$p{perl}%> kullanıyorum, mutluyum, gururluyum!
+Sonuna kadar sömürebileceğim <%=$p{cpu}%> işlemcim ve <%=$p{ram}%> belleğim var.
+Bir modül paketlemek için güzel bir ortam, güzel bir zaman ;)
+
+MESSAGE
+   'hello.ram'        => '%.2f cigaboy',
+   '_chdir.noparam'   => 'Dizin belirtilmedi!',
+   '_chdir.error'     => 'Geçerli dizin <%= $p{dir} %> olarak değiştirilemiyor: <%= $p{error} %>',
+   'call.error'       => <<'MESSAGE',
+Paketleme işlemi başarısız oldu :
+Son komut: <%= $p{cmd}   %>
+Sonuç: <%=     $p{error} %>
+MESSAGE
+   'write_file.error' => '<%= $p{file} %> dosyası açılamıyor: <%= $p{error} %>',
+   'unix.nofile'      => 'Dosya belirtilmedi!',
+   'unix.eread'       => 'Okuma hatası (<%= $p{file} %>): <%= $p{error} %>',
+   'unix.ewrite'      => 'Yazma hatası (<%= $p{file} %>): <%= $p{error} %>',
+);

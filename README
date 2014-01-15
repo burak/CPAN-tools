@@ -1,0 +1,61 @@
+﻿Burak Gürsoy - Build tools
+==========================
+
+This repository includes tools to build a CPAN distribution from a CPAN-*
+repository of Burak Gürsoy. You can not build a CPAN distribution out of
+other repositories without the help of this repository.
+
+To get this repo and the rest of Burak Gürsoy' s repositories, first install
+these modules:
+
+    HTML::TableParser
+    JSON
+    LWP::UserAgent
+    LWP::Protocol::https
+    Software::License
+    Module::Build
+    Text::Template::Simple
+    Time::HiRes
+
+You'll also need to have Mercurial installed: http://mercurial.selenic.com/
+
+Then choose where to install the repositores (it can be ~/bgrepos).
+Open a terminal (or dosbox) and cd to that directory.
+Issue this command:
+
+Under Windows:
+    perl -MLWP::Simple=get -e "print get q{http://bitbucket.org/burak/cpan-tools/raw/tip/bclone.pl}" | perl
+
+Under Linux/Unix:
+
+    perl -MLWP::Simple=get -e 'print get q{http://bitbucket.org/burak/cpan-tools/raw/tip/bclone.pl}' | perl
+
+(if you have trouble executing these, then download bclone.pl manually and
+execute: `perl bclone.pl`)
+
+This'll clone all repositories properly. Then set this environment variable
+to point to the base directory (eg: ~/bgrepos):
+
+    BURAK_BUILD_BASE
+
+You can now build modules by executing `build.pl`.
+
+================================================================================
+
+The contents of this repository:
+================================
+
+bclone.pl - Bootstrapper and repo cloner.
+bbuild.pl - Distro builder builder.
+builder/.perlcriticrc - All repos use this as the Perl::Critic policy.
+builder/builder/lib/Build.pm - The distro builder (merged to all distros).
+builder/builder/lib/Build/Spec.pm - Configuration manager (merged to all distros).
+builder/t/* - The directory contents will be merged into the distro.
+
+What builder does
+=================
+
+The Build & Build::Spec modules handle the build & install process. The CPAN
+code repos only includes a Build.PL & SPEC files. SPEC is read by Build::Spec
+which is loaded by Build which in turn bootstrapped via Build.PL or Makefile.PL
+(automatically generated in the build process).

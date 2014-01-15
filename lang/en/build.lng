@@ -1,0 +1,53 @@
+%lang = (
+   'pause'           => 'Press enter to continue ...',
+   'bench.error'     => "\nOperation took %.4f seconds\n",
+   'bench.ok'        => "\nOperation completed in %s\n",
+   'start.message'   => "%s version %s starting ...\n",
+   'exit.message'    => "\n\n\tSession terminated!\n\n",
+   'error.notnumber' => "\n\tInput is not a number!\n\n",
+   'error.length'    => "\n\tInput is too big!\n\n",
+   'error.notexists' => "\n\tYou wanted to select something that does not exist!\n\n",
+   'ask.selection'   => 'Select a module to build [1]: ',
+   'finish.report'   => <<'INFO',
+Directories used in this session:
+   Source    : <%= $p{source} %>
+   Module    : <%= $p{source_dir} %>
+   Package   : <%= $p{build} %> (keep: <%= $p{keep} %>)
+   Archive   : <%= $p{archive} %>
+   CWD       : <%= $p{cwd} %>
+INFO
+   'get_path.source' => 'Unknown source dir: <%=      $p{source} %>',
+   'get_path.build'  => 'Unknown packaging dir: <%=   $p{build}  %>',
+   'get_path.build'  => 'Unknown archive dir: <%=     $p{build}  %>',
+   'duplicate.copy'  => '<%= $p{file} %> can not be copied: <%= $p{error}  %>',
+   'build.buildpl'   => '[OOOPS!] Build.PL, can not be found inside <%=    $p{target} %> !!!',
+   'build.makefilepl'=> '[OOOPS!] Makefile.PL, can not be found inside <%=    $p{target} %> !!!',
+   'build.nobuilder' => '<%=   $p{target} %> has no build tool in it!',
+   'ask.nobuilder'   => '! <%= $p{path}   %> is skipped because it has no build tool in it ...'."\n",
+   'ask.nomodules'   => 'No module(s) can be found in the source dir!',
+   'ask.found'       => "\nFound distros:\n\n",
+   'ask.ok'          => <<'MESSAGE',
+
+    OH YEAH!
+
+You've selected: <%= $p{target} %> (<%= $p{modname} %>) ...
+
+MESSAGE
+   'hello.hello'     => <<'MESSAGE',
+I'm using <%=$p{os}%> with perl <%=$p{perl}%>!
+I have <%=$p{cpu}%> CPU and <%=$p{ram}%> memory.
+
+MESSAGE
+   'hello.ram'        => '%.2f GB',
+   '_chdir.noparam'   => 'No directory specified!',
+   '_chdir.error'     => 'CWD can not be changed into <%= $p{dir} %>: <%= $p{error} %>',
+   'call.error'       => <<'MESSAGE',
+Packaging failed :
+Last cmd: <%= $p{cmd}   %>
+Result  : <%= $p{error} %>
+MESSAGE
+   'write_file.error' => '<%= $p{file} %> can not be opened: <%= $p{error} %>',
+   'unix.nofile'      => 'No file specified!',
+   'unix.eread'       => 'Read error (<%=  $p{file} %>): <%= $p{error} %>',
+   'unix.ewrite'      => 'Write error (<%= $p{file} %>): <%= $p{error} %>',
+);
