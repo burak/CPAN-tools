@@ -17,7 +17,6 @@ GetOptions(\my %OPT, qw(
     color
     commit
     push
-    update
     pull
     all
 ));
@@ -80,7 +79,7 @@ sub visit {
         _p("Error fetching status: $@\n");
     }
 
-    foreach my $cmd ( qw( push pull update ) ) {
+    foreach my $cmd ( qw( push pull ) ) {
         system git => $cmd if $OPT{$cmd};
     }
 
